@@ -6,7 +6,7 @@ import random
 import time
 import sys
 from pathlib import Path
-import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw
 
 import numpy as np
 import torch
@@ -257,20 +257,32 @@ def main(args):
 
 def visualize_augmentation(args):
     dataset_train = build_dataset(image_set='train', args=args)
+    print("Number of training examples:", len(dataset_train))
 
-    sampler_train = torch.utils.data.RandomSampler(dataset_train)
+    image_ids = dataset_train.coco.getImgIds()
+    # let's pick a random image
+    image_id = image_ids[np.random.randint(0, len(image_ids))]
+    print('Image n°{}'.format(image_id))
+    image = dataset_train.coco.loadImgs(image_id)[0]
+    image = Image.open(os.path.join('/content/drive/MyDrive/full_data_coco/train2017', image['file_name']))
 
-    batch_sampler_train = torch.utils.data.BatchSampler(sampler_train, args.batch_size, drop_last=True)
+    annotations = dataset_train.coco.imgToAnns[image_id]
+    draw = ImageDraw.Draw(image, "RGBA")
 
-    data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
-                                    collate_fn=utils.collate_fn, num_workers=args.num_workers)
+    cats = dataset_train.coco.cats
+    id2label = {k: v['name'] for k,v in cats.items()}
 
-    examples = next(iter(data_loader_train))
-    print(examples)
+    for annotation in annotations:
+      box = annotation['bbox']
+      class_idx = annotation['category_id']
+      x,y,w,h = tuple(box)
+      draw.rectangle((x,y,x+w,y+h), outline='red', width=1)
+      draw.text((x, y), id2label[class_idx], fill='white')
 
-    for label, img  in enumerate(examples):
-       print(img)
-       print(f"Label: {label}")
+    image
+
+
+    
     
 
 
