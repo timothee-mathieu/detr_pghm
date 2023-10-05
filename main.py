@@ -4,6 +4,7 @@ import datetime
 import json
 import random
 import time
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -252,12 +253,26 @@ def main(args):
     print('Training time {}'.format(total_time_str))
 
 
+
+    def visualize_augmentation(args):
+        dataset_train = build_dataset(image_set='train', args=args)
+
+        batch_sampler_train = torch.utils.data.BatchSampler(
+            sampler_train, args.batch_size, drop_last=True)
+
+        data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
+                                       collate_fn=utils.collate_fn, num_workers=args.num_workers)
+        return data_loader_train
+
+
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('DETR training and evaluation script', parents=[get_args_parser()])
     args = parser.parse_args()
     if args.visualize_augmentation:
-        print('ok')
-        sys.exit()
-    if args.output_dir:
-        Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    main(args)
+        visualize_augmentation(args)
+    else:
+        if args.output_dir:
+            Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+        main(args)
