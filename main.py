@@ -257,8 +257,9 @@ def main(args):
 def visualize_augmentation(args):
     dataset_train = build_dataset(image_set='train', args=args)
 
-    batch_sampler_train = torch.utils.data.BatchSampler(
-        sampler_train, args.batch_size, drop_last=True)
+    sampler_train = torch.utils.data.RandomSampler(dataset_train)
+
+    batch_sampler_train = torch.utils.data.BatchSampler(sampler_train, args.batch_size, drop_last=True)
 
     data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
                                     collate_fn=utils.collate_fn, num_workers=args.num_workers)
