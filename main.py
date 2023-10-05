@@ -4,7 +4,7 @@ import datetime
 import json
 import random
 import time
-import sys
+import sys, os
 from pathlib import Path
 from PIL import Image, ImageDraw
 
