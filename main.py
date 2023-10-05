@@ -263,7 +263,14 @@ def visualize_augmentation(args):
 
     data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
                                     collate_fn=utils.collate_fn, num_workers=args.num_workers)
-    return data_loader_train
+
+    examples = next(iter(data_loader_train))
+
+    for label, img  in enumerate(examples):
+       plt.imshow(img.permute(1,2,0))
+       plt.show()
+       print(f"Label: {label}")
+    
 
 
 
