@@ -229,6 +229,10 @@ class ToTensor(object):
     def __call__(self, img, target):
         return F.to_tensor(img), target
 
+class ToImage(object):
+    def __call__(self, img, target):
+        return F.to_image(img), target
+
 
 class RandomErasing(object):
 
