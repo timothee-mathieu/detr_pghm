@@ -20,7 +20,7 @@ def crop(image, target, region):
     i, j, h, w = region
 
     # should we do something wrt the original size?
-    target["size"] = torch.tensor([h, w])
+    #target["size"] = torch.tensor([h, w])
 
     fields = ["labels", "area", "iscrowd"]
 
@@ -123,7 +123,7 @@ def resize(image, target, size, max_size=None):
         target["area"] = scaled_area
 
     h, w = size
-    target["size"] = torch.tensor([h, w])
+    #target["size"] = torch.tensor([h, w])
 
     if "masks" in target:
         target['masks'] = interpolate(
@@ -139,7 +139,7 @@ def pad(image, target, padding):
         return padded_image, None
     target = target.copy()
     # should we do something wrt the original size?
-    target["size"] = torch.tensor(padded_image.size[::-1])
+    #target["size"] = torch.tensor(padded_image.size[::-1])
     if "masks" in target:
         target['masks'] = torch.nn.functional.pad(target['masks'], (0, padding[0], 0, padding[1]))
     return padded_image, target
