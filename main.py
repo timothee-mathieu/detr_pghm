@@ -6,6 +6,10 @@ import random
 import time
 import sys
 from pathlib import Path
+import skimage.io as io
+import matplotlib.pyplot as plt
+import pylab
+pylab.rcParams['figure.figsize'] = (10.0, 8.0)
 
 import numpy as np
 import torch
@@ -267,8 +271,8 @@ def visualize_augmentation(args):
     examples = next(iter(data_loader_train))
 
     for label, img  in enumerate(examples):
-       plt.imshow(img.permute(1,2,0))
-       plt.show()
+       plt.figure()
+       plt.imshow(img)
        print(f"Label: {label}")
     
 
