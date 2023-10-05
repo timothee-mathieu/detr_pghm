@@ -266,10 +266,10 @@ def visualize_augmentation(args):
                                     collate_fn=utils.collate_fn, num_workers=args.num_workers)
 
     examples = next(iter(data_loader_train))
+    print(examples)
 
     for label, img  in enumerate(examples):
-       plt.imshow(img.permute(1,2,0))
-       plt.show()
+       print(img)
        print(f"Label: {label}")
     
 
